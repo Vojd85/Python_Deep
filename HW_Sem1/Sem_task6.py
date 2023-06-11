@@ -9,7 +9,7 @@ if year < GREG_CALENDAR:
     result = 'Грегорианский календарь был введен только в феврале 1582г.'
 elif year % YEAR_CONST1 != 0:
     result = 'Обычный год'
-elif year % YEAR_CONST2 == 0 and year % (YEAR_CONST1 * YEAR_CONST2) == 0:
+elif year % (YEAR_CONST1 * YEAR_CONST2) == 0:
     result = 'Високосный год'
 elif year % YEAR_CONST2 == 0:
     result = 'Обычный год'
