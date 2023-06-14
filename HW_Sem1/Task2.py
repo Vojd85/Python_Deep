@@ -3,17 +3,26 @@
 # Сделайте ограничение на ввод отрицательных чисел и чисел больше 100 тысяч.
 
 MAX_LIMIT = 100000
-MIN_LIMIT = 1
+MIN_LIMIT = 0
 
 result = True
 
 number = int(input('Введите число для проверки: '))
 while number < MIN_LIMIT or number > MAX_LIMIT:
-    number = int(input('Число должно быть не отрицательным и не более ' + str(MAX_LIMIT) + '\n Попробуйте еще раз: '))
-for num in range(MIN_LIMIT + 1, number):
-    if number % num == 0:
-        result = False
-        break
+    number = int(input('Число должно быть не отрицательным, не нулём и не более ' + str(MAX_LIMIT) + '\n Попробуйте еще раз: '))
+if number == 1:
+    print('Единица не считается ни простым, ни составным числом')
+    quit()
+elif number == 0:
+    print('Ноль не считается ни простым, ни составным числом')
+    quit()
+else:
+    for num in range(2, int(number ** 0.5) + 1):
+        if number % num == 0:
+            print('Число составное')
+            break
+    else:
+        print('Число простое')
     
-if result == True: print('Число простое')
-else: print('Число составное')
+# if result == True: print('Число простое')
+# else: print('Число составное')

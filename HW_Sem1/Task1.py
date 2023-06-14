@@ -5,18 +5,18 @@
 # равнобедренным или равносторонним.
 
 A_SIDE = 10
-B_SIDE = 10
+B_SIDE = 12
 C_SIDE = 10
 
 result = None
 
-if A_SIDE > (B_SIDE + C_SIDE) or B_SIDE > (A_SIDE + C_SIDE) or C_SIDE > (A_SIDE + B_SIDE):
+if A_SIDE > B_SIDE + C_SIDE or B_SIDE > A_SIDE + C_SIDE or C_SIDE > A_SIDE + B_SIDE or \
+    A_SIDE == B_SIDE == C_SIDE == 0:
     result = 'Такого треугольника не существует'
+elif A_SIDE == B_SIDE == C_SIDE:
+    result = 'Это равносторонний треугольник'
+elif A_SIDE != B_SIDE != C_SIDE != A_SIDE:
+    result = 'Это разносторонний треугольник'
 else:
-    if A_SIDE == B_SIDE and B_SIDE == C_SIDE:
-        result = 'Это равносторонний треугольник'
-    elif A_SIDE == B_SIDE or B_SIDE == C_SIDE or C_SIDE == A_SIDE:
-        result = 'Это равнобедренный треугольник'
-    else:
-        result = 'Это разносторонний треугольник'
+    result = 'Это равнобедренный треугольник'
 print(result)
