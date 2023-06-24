@@ -4,7 +4,7 @@
 
 from fractions import Fraction
 
-def Great_delimiter (num1, num2):
+def great_delimiter (num1, num2):
     if num1 > num2:
         temp = num2
     else:
@@ -25,21 +25,26 @@ a = int(str_1[:str_1.index('/')])
 b = int(str_1[str_1.index('/')+1:])
 c = int(str_2[:str_2.index('/')])
 d = int(str_2[str_2.index('/')+1:])
+if a or b or c or d == 0:
+    print('Ноль не может быть ни в числителе, ни в знаменателе')
+    quit()
 
 numerator = a*d + c*b
 denumerator = b*d
-gcd = Great_delimiter(numerator, denumerator)
-summ_fraction = str(int(numerator/gcd)) + '/' + str(int(denumerator/gcd))
+gcd = great_delimiter(numerator, denumerator)
+if numerator == denumerator:
+    summ_fraction = 1
+else:
+    summ_fraction = str(int(numerator/gcd)) + '/' + str(int(denumerator/gcd))
 
 numerator = a*c
 denumerator = b*d
-gcd = Great_delimiter(numerator, denumerator)
-mult_fraction = str(int(numerator/gcd)) + '/' + str(int(denumerator/gcd))
+gcd = great_delimiter(numerator, denumerator)
+if numerator == denumerator:
+    mult_fraction = 1
+else:
+    mult_fraction = str(int(numerator/gcd)) + '/' + str(int(denumerator/gcd))
 
 
 print('Сложение равно ', summ_fraction, 'через fraction', Fraction(str_1) + Fraction(str_2))
 print('Умножение равно', mult_fraction,'через fraction', Fraction(str_1) * Fraction(str_2))
-
-# text = 'знаменатель/делитель'
-# print(text[:text.index('/')])        до
-# print(text[text.index('/') + 1:])    после
