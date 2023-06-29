@@ -1,8 +1,7 @@
 # Возьмите задачу о банкомате из семинара 2. Разбейте её на отдельные операции — функции. 
 # Дополнительно сохраняйте все операции поступления и снятия средств в список.
 
-BALANCE = 0
-COUNT = 0
+
 OPERATION_MULTIPLICITY = 50
 REACH_LIMIT = 5000000
 REACH_PERCENT = 0.1
@@ -12,76 +11,76 @@ MIN_COMISSION = 30
 MAX_COMISSION = 600
 
 
-def show_balance():
-    print(f'Ваш баланс: {BALANCE}')
+def show_balance(balance):
+    print(f'Ваш баланс: {balance}')
 
 
 def logger(number, lst: list):
     lst += [number]
 
 
-def add_():
-    global BALANCE
-
+def add_(balance, index):
     add_summ = int(input('Введите сумму пополнения кратную 50 у.е.: '))
-    if add_summ % OPERATION_MULTIPLICITY == 0:
-        BALANCE += add_summ
+    if add_summ % index == 0:
         logger(add_summ, log_list)
+        return add_summ
     else:
         print('Вы ввели сумму не кратную 50 у.е. Попробуйте еще раз')
+        return 0
 
 
-def pop_():
-    global BALANCE
-
+def pop_(balance, index, min, max):
     pop_summ = int(input('Введите сумму для снятия кратную 50 у.е.:'))
-    if pop_summ % OPERATION_MULTIPLICITY == 0:
+    if pop_summ % index == 0:
         percent = pop_summ * POP_PERCENT
-        if percent < MIN_COMISSION: percent = MIN_COMISSION
-        elif percent > MAX_COMISSION: percent = MAX_COMISSION
-        if pop_summ + percent > BALANCE:                    
-            print('На счете недостаточно средств')                    
+        if percent < min: percent = min
+        elif percent > max: percent = max
+        if pop_summ + percent > balance:                    
+            print('На счете недостаточно средств')  
+            return 0                  
         else:
-            BALANCE -= pop_summ + percent
             logger((-1)*(pop_summ + percent), log_list)
+            return pop_summ + percent
     else:
         print('Вы ввели сумму не кратную 50 у.е. Попробуйте еще раз')
+        return 0
 
 
-def add_count_percent():
-    result = BALANCE * THIRD_COUNT_PERCENT
+def add_count_percent(balance, index):
+    result = balance * index
     logger(result, log_list)
     return result
 
 
-def pop_reach_percent():
-    result = BALANCE * REACH_PERCENT
+def pop_reach_percent(balance, index):
+    result = balance * index
     logger((-1)*result, log_list)
     return result
 
 
-print('Добро пожаловать в банкомат! \n 1 Пополнить счет; 2 Снять средства; 3 Выход')
-
+print('Добро пожаловать в банкомат!')
+balance = 0
+count = 0
 log_list = []
 
 while True:
-    if COUNT % 3 == 0 and COUNT != 0:
-        BALANCE += add_count_percent()
-    if BALANCE > REACH_LIMIT:
-        BALANCE -= pop_reach_percent()
-    print('Выберите действие: ')
+    if count % 3 == 0 and count != 0:
+        balance += add_count_percent(balance, THIRD_COUNT_PERCENT)
+    if balance > REACH_LIMIT:
+        balance -= pop_reach_percent(balance, REACH_PERCENT)
+    print('Выберите действие(1 Пополнить счет; 2 Снять средства; 3 Выход): ')
     choice = input()
     match choice:
         case '1':
-            add_()
-            show_balance()
-            COUNT += 1
+            balance += add_(balance, OPERATION_MULTIPLICITY)
+            show_balance(balance)
+            count += 1
         case '2':
-            pop_()
-            show_balance()
-            COUNT += 1
+            balance -= pop_(balance, OPERATION_MULTIPLICITY, MIN_COMISSION, MAX_COMISSION)
+            show_balance(balance)
+            count += 1
         case '3':
-            show_balance()
+            show_balance(balance)
             print('До свидания!')
             break
-    print(log_list)
+    print(f'Последние 5 операций: {log_list[-5:]}')
