@@ -10,20 +10,30 @@ from random import randint
 import math
 from typing import Callable
 
-FILE = 'nums.csv'
+CSV_FILE = 'nums.csv'
+JSON_FILE = 'nums.json'
 MIN_ROWS = 100
 MAX_ROWS = 1000
 
 
-def search_sqrt(func: Callable):
-    res_list = []
+def sqrt_to_json(func):
     def wrapper(*args, **kwargs):
-        with open(FILE, 'r', encoding='utf-8') as file:
+        res_dict = [{'nums': item[0], 'roots': item[1]} for item in func(*args, **kwargs)]
+        with open(JSON_FILE, "w", encoding='UTF-8') as file:
+            json.dump(res_dict, file, indent=2)
+        return res_dict
+    return wrapper
+
+def search_sqrt(func):
+    
+    def wrapper(*args, **kwargs):
+        res_list = []
+        with open(CSV_FILE, 'r', encoding='utf-8') as file:
             reader = csv.reader(file, quoting=csv.QUOTE_NONNUMERIC, delimiter=',')
             for row in reader:
-                a, b, c = row
-                res = func(a, b, c)
-                res_list.append(res)
+                a, b, c = row[0], row[1], row[2]
+                result = func(a, b, c)
+                res_list.append((row, result))
         return res_list
     return wrapper   
 
@@ -33,21 +43,22 @@ def fill_csv(csv_file, min, max):
         for _ in range(randint(min, max)):
             writer.writerow([randint(10, 100) for _ in range(3)])
 
-@search_sqrt('nums.csv')
-def sqrt(a, b, c):
+@sqrt_to_json
+@search_sqrt
+def sqrt_(a, b, c):
     if a == 0:
-        return (None)
+        return None
     d = b ** 2 - 4 * a * c
     if d > 0:
         x1 = (-b + math.sqrt(d)) / (2 * a)
         x2 = (-b - math.sqrt(d)) / (2 * a)
-        return (x1, x2)
+        return x1, x2
     elif d == 0:
         x = -b / (2 * a)
-        return (x)
+        return x
     else:
-        return (None)
+        return None
 
 
-# fill_csv('nums.csv', MIN_ROWS, MAX_ROWS)
-result = sqrt()
+# fill_csv(FILE, MIN_ROWS, MAX_ROWS)
+result = sqrt_()
