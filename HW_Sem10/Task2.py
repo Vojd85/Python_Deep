@@ -41,9 +41,7 @@ class FileWork:
              open(result_file, 'w', encoding='utf-8') as f_res):
             data = []
             for item in zip(f_names, f_nums):
-                # print(item[0].strip(), item[1].strip())
                 a, b = map(float, item[1].strip().split('|'))
-                # print(type(a), a, type(b), b)
                 data.append({'Name': item[0].strip(), 'Result': a * b})
             
             json.dump(data, f_res, indent=4, ensure_ascii=False)
